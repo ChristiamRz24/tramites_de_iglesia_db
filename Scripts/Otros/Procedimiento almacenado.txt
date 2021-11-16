@@ -1,0 +1,21 @@
+--PROCEDIMIENTO ALMACENADO
+create or replace function contar_matrimonios(id varchar) returns integer
+as $$ --Lenguaje procedural
+declare
+	nombre varchar := '';
+	total integer := 0;
+begin
+	if not exists (select sacerdote.id_sacerdote from sacerdote where sacerdote.id_sacerdote = id) then
+		raise notice 'El id "%" no existe en la Base de Datos', id;
+	else
+		select sacerdote.nombre_sacerdote, count(sacramento.id_sacramento) into nombre, total 
+		from sacramento inner join tipo on sacramento.id_tipo = tipo.id_tipo
+		inner join sacerdote on sacramento.id_sacerdote = sacerdote.id_sacerdote
+		WHERE tipo.id_tipo = '00003' and sacerdote.id_sacerdote = id
+		GROUP BY sacerdote.nombre_sacerdote, tipo.id_tipo;
+		--
+		raise notice 'Matrimonios celebrados por el sacerdote %: %', nombre, total;
+	end if;
+return total;
+end $$
+language plpgsql;

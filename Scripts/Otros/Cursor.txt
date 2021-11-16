@@ -1,0 +1,18 @@
+--CURSOR
+do $$
+declare
+	registros record; --Para acceder a los datos del cursor
+	acta_fecha cursor for select * from acta 
+		inner join tipo on acta.id_tipo = tipo.id_tipo
+		where tipo.id_tipo = '00004';
+begin
+	for registros in acta_fecha
+	loop
+		raise notice 
+		'
+		Acta: %, 
+		Fecha de expedicion: %',
+		registros.nombre_tipo, registros.fecha_Expedicion_acta;
+	end loop;
+end $$
+language 'plpgsql';
