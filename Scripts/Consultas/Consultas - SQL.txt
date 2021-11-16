@@ -1,0 +1,56 @@
+--Consulta 1
+
+--Consulta 2
+SELECT
+	count (acta.id_acta) as Actas_emitidas,
+	tipo.nombre_tipo as Tipo,
+	iglesia.nombre_iglesia as Iglesia
+FROM
+	acta
+	inner join tipo
+	on acta.id_tipo = tipo.id_tipo
+	inner join iglesia
+	on acta.id_iglesia = iglesia.id_iglesia
+WHERE 
+	tipo.id_tipo = '00005'
+GROUP BY 
+	tipo.nombre_tipo,
+	iglesia.nombre_iglesia;
+	
+--Consulta 3
+SELECT
+	count (sacramento.id_sacramento) AS Total_ceremonias,
+	tipo.nombre_tipo as Sacramento,
+	sacerdote.nombre_sacerdote as Sacerdote,
+	iglesia.nombre_iglesia as Iglesia
+FROM
+	sacramento
+	inner join sacerdote
+	on sacramento.id_sacerdote = sacerdote.id_sacerdote
+	inner join iglesia
+	on sacerdote.id_sacerdote = iglesia.id_sacerdote
+	inner join tipo
+	on sacramento.id_tipo = tipo.id_tipo
+WHERE 
+	sacerdote.id_sacerdote = '00001'
+GROUP BY 
+	tipo.nombre_tipo,
+	sacerdote.nombre_sacerdote,
+	iglesia.nombre_iglesia
+ORDER BY 
+	tipo.nombre_tipo asc;
+
+--Consulta 4
+SELECT
+	to_char(acta.fecha_expedicion_acta, 'YYYY') as Año,
+	tipo.nombre_tipo as Tipo_de_documento,
+	sacerdote.nombre_sacerdote as Sacerdote
+FROM
+	acta
+	inner join sacramento
+	on acta.id_sacramento = sacramento.id_sacramento	
+	inner join sacerdote
+	on sacramento.id_sacerdote = sacerdote.id_sacerdote
+	inner join tipo
+	on acta.id_tipo = tipo.id_tipo;
+

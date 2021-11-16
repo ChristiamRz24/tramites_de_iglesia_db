@@ -1,0 +1,34 @@
+--Para el trigger
+SELECT
+	sacerdote.nombre_sacerdote as Sacerdote,
+	count (sacramento.id_sacramento) AS Total_ceremonias
+FROM
+	sacramento
+	inner join sacerdote
+	on sacramento.id_sacerdote = sacerdote.id_sacerdote
+WHERE 
+	sacerdote.id_sacerdote = '00001'
+GROUP BY 
+	sacerdote.nombre_sacerdote;
+
+--Para el reporte (info de la iglesia)
+SELECT
+	iglesia.nombre_iglesia AS iglesia,
+	iglesia.direccion_iglesia AS direccion,
+	iglesia.telefono_iglesia AS telefono
+FROM
+	iglesia
+WHERE
+	iglesia.id_iglesia = '00001';
+--Para el reporte (total de actas expedidas)
+SELECT
+	tipo.nombre_tipo as tipo,
+	count (acta.id_acta) as total
+FROM
+	acta
+	inner join tipo
+	on acta.id_tipo = tipo.id_tipo
+GROUP BY
+	tipo.id_tipo
+ORDER BY
+	tipo.id_tipo asc;

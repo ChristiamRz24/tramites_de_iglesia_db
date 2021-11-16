@@ -1,0 +1,82 @@
+--TRIGGER
+CREATE OR REPLACE
+FUNCTION ft_actualizar()
+RETURNS TRIGGER AS $$
+DECLARE
+	t_ceremonias_celebradas integer:= 0;
+BEGIN 
+	SELECT COUNT(sacramento.id_sacramento) INTO t_ceremonias_celebradas
+	FROM sacramento;
+	--Actualizar el dato
+	UPDATE sacerdote SET ceremonias_celebradas = t_ceremonias_celebradas 
+	WHERE sacerdote.id_sacerdote = '00001';
+RETURN NEW;
+END $$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER tr_actualizar_dato
+AFTER INSERT OR UPDATE ON sacramento
+FOR EACH ROW
+EXECUTE PROCEDURE ft_actualizar()
+
+--UPDATE sacerdote
+--SET ceremonias_celebradas = 0
+--WHERE sacerdote.id_sacerdote = '00001';
+---
+--UPDATE sacramento
+--SET id_sacerdote = '00001'
+--WHERE sacramento.id_sacramento = '00001';
+
+--CURSOR
+do $$
+declare
+	registros record; --Para acceder a los datos del cursor
+	acta_fecha cursor for select * from acta 
+		inner join tipo on acta.id_tipo = tipo.id_tipo
+		where tipo.id_tipo = '00004';
+begin
+	for registros in acta_fecha
+	loop
+		raise notice 
+		'
+		Acta: %, 
+		Fecha de expedicion: %',
+		registros.nombre_tipo, registros.fecha_Expedicion_acta;
+	end loop;
+end $$
+language 'plpgsql';
+
+--o Tambien---
+select 
+	tipo.nombre_tipo,
+	acta.fecha_expedicion_acta
+from 
+	acta 
+	inner join tipo 
+	on acta.id_tipo = tipo.id_tipo
+where tipo.id_tipo = '00004';
+
+--PROCEDIMIENTO ALMACENADO
+create or replace function contar_matrimonios(id varchar) returns integer
+as $$ --Lenguaje procedural
+declare
+	nombre varchar := '';
+	total integer := 0;
+begin
+	if not exists (select sacerdote.id_sacerdote from sacerdote where sacerdote.id_sacerdote = id) then
+		raise notice 'El id "%" no existe en la Base de Datos', id;
+	else
+		select sacerdote.nombre_sacerdote, count(sacramento.id_sacramento) into nombre, total 
+		from sacramento inner join tipo on sacramento.id_tipo = tipo.id_tipo
+		inner join sacerdote on sacramento.id_sacerdote = sacerdote.id_sacerdote
+		WHERE tipo.id_tipo = '00003' and sacerdote.id_sacerdote = id
+		GROUP BY sacerdote.nombre_sacerdote, tipo.id_tipo;
+		--
+		raise notice 'Matrimonios celebrados por el sacerdote %: %', nombre, total;
+	end if;
+return total;
+end $$
+language plpgsql;
+
+--Consulta de prueba
+select contar_matrimonios('00001');
