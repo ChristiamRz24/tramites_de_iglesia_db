@@ -1,0 +1,16 @@
+--Consulta 2
+SELECT
+	count (acta.id_acta) as Actas_emitidas,
+	tipo.nombre_tipo as Tipo,
+	iglesia.nombre_iglesia as Iglesia
+FROM
+	acta
+	inner join tipo
+	on acta.id_tipo = tipo.id_tipo
+	inner join iglesia
+	on acta.id_iglesia = iglesia.id_iglesia
+WHERE 
+	tipo.id_tipo = '00005'
+GROUP BY 
+	tipo.nombre_tipo,
+	iglesia.nombre_iglesia;

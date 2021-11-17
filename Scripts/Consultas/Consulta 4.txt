@@ -1,0 +1,13 @@
+--Consulta 4
+SELECT
+	to_char(acta.fecha_expedicion_acta, 'YYYY') as Año,
+	tipo.nombre_tipo as Tipo_de_documento,
+	sacerdote.nombre_sacerdote as Sacerdote
+FROM
+	acta
+	inner join sacramento
+	on acta.id_sacramento = sacramento.id_sacramento	
+	inner join sacerdote
+	on sacramento.id_sacerdote = sacerdote.id_sacerdote
+	inner join tipo
+	on acta.id_tipo = tipo.id_tipo;

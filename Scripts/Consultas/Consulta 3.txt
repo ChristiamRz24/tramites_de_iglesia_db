@@ -1,0 +1,22 @@
+--Consulta 3
+SELECT
+	count (sacramento.id_sacramento) AS Total_ceremonias,
+	tipo.nombre_tipo as Sacramento,
+	sacerdote.nombre_sacerdote as Sacerdote,
+	iglesia.nombre_iglesia as Iglesia
+FROM
+	sacramento
+	inner join sacerdote
+	on sacramento.id_sacerdote = sacerdote.id_sacerdote
+	inner join iglesia
+	on sacerdote.id_sacerdote = iglesia.id_sacerdote
+	inner join tipo
+	on sacramento.id_tipo = tipo.id_tipo
+WHERE 
+	sacerdote.id_sacerdote = '00001'
+GROUP BY 
+	tipo.nombre_tipo,
+	sacerdote.nombre_sacerdote,
+	iglesia.nombre_iglesia
+ORDER BY 
+	tipo.nombre_tipo asc;
