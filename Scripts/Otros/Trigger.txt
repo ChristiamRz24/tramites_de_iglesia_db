@@ -1,15 +1,18 @@
 --TRIGGER
-CREATE OR REPLACE
-FUNCTION ft_actualizar()
+CREATE OR REPLACE FUNCTION ft_actualizar()
 RETURNS TRIGGER AS $$
 DECLARE
 	t_ceremonias_celebradas integer:= 0;
-BEGIN 
-	SELECT COUNT(sacramento.id_sacramento) INTO t_ceremonias_celebradas
-	FROM sacramento;
-	--Actualizar el dato
-	UPDATE sacerdote SET ceremonias_celebradas = t_ceremonias_celebradas 
-	WHERE sacerdote.id_sacerdote = '00001';
+	registros record;
+BEGIN
+	FOR registros IN SELECT * FROM sacerdote LOOP --Recorrer todas las id's
+		--Consultar el dato
+		SELECT COUNT(sacramento.id_sacramento) INTO t_ceremonias_celebradas
+		FROM sacramento WHERE id_sacerdote = registros.id_sacerdote;
+		--Actualizar el dato
+		UPDATE sacerdote SET ceremonias_celebradas = t_ceremonias_celebradas 
+		WHERE sacerdote.id_sacerdote = registros.id_sacerdote;
+	END LOOP;
 RETURN NEW;
 END $$
 LANGUAGE plpgsql;
@@ -18,3 +21,6 @@ CREATE TRIGGER tr_actualizar_dato
 AFTER INSERT OR UPDATE ON sacramento
 FOR EACH ROW
 EXECUTE PROCEDURE ft_actualizar()
+
+--Probar el TRIGGER
+UPDATE sacramento SET id_sacerdote = '00001' where id_sacramento = '00001';

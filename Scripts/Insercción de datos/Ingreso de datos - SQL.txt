@@ -3,6 +3,7 @@ SET datestyle = "MDY";
 
 -- SACERDOTE
 insert into sacerdote values ('00001', 'Mario Oliva Heras', 0);
+--insert into sacerdote values ('00002', 'Calos Lóper Hernán', 0);
 
 -- PARROQUIA
 insert into parroquia values ('00001', 'Eloy Alfaro');
