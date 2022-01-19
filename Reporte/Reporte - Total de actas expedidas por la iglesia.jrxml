@@ -253,6 +253,35 @@ WHERE
 					</jr:column>
 				</jr:table>
 			</componentElement>
+			<barChart>
+				<chart>
+					<reportElement x="513" y="235" width="200" height="100" uuid="f9bab322-f358-42a0-b85a-d9f7df1d3bc7"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<dataset>
+						<datasetRun subDataset="total_actas" uuid="a93aa416-c79b-46ec-9953-9f86c7e2fcce"/>
+					</dataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{tipo}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{tipo}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{total}]]></valueExpression>
+						<labelExpression><![CDATA[$F{tipo}]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
 		</band>
 	</pageHeader>
 	<columnHeader>

@@ -2,7 +2,7 @@
 do $$
 declare
 	anio_actual int := (SELECT EXTRACT(YEAR FROM DATE (current_date)));
-	fecha_nacimiento date; 		--Para almacenar la fecha de nacimiento completa
+	--fecha_nacimiento date; 		--Para almacenar la fecha de nacimiento completa
 	anio_nacimiento int := 0; 	--Para almacenar el año de nacimiento del feligres
 	edad int := 0; 				--Para almacenar la edad del feligres
 	registros record; 			--Para acceder a los datos del cursor
@@ -23,8 +23,8 @@ begin
 	end loop;
 	for registros in my_cursor --Recorrer el cursor
 	loop
-		fecha_nacimiento:= registros.fecha_nacimiento_feligres; --Extracción de la fecha
-		anio_nacimiento := (SELECT EXTRACT(YEAR FROM fecha_nacimiento)); --Extracción del año
+		--fecha_nacimiento:= registros.fecha_nacimiento_feligres; --Extracción de la fecha
+		anio_nacimiento := (SELECT EXTRACT(YEAR FROM registros.fecha_nacimiento_feligres)); --Extracción del año
 		edad := anio_actual - anio_nacimiento; --Cálculo de la edad
 		if (edad > 0 and edad < 3) then
 			entre_1_y_2 := entre_1_y_2 + 1;

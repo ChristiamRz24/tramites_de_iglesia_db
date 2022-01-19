@@ -17,10 +17,8 @@ RETURN NEW;
 END $$
 LANGUAGE plpgsql;
 
-CREATE TRIGGER tr_actualizar_dato
-AFTER INSERT OR UPDATE ON sacramento
+CREATE TRIGGER tr_restringir
+BEFORE INSERT OR UPDATE ON sala_maternidad_partos
 FOR EACH ROW
-EXECUTE PROCEDURE ft_actualizar()
+EXECUTE PROCEDURE ft_restringir()
 
---Probar el TRIGGER
-UPDATE sacramento SET id_sacerdote = '00001' where id_sacramento = '00001';

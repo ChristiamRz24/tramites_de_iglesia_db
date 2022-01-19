@@ -1,0 +1,15 @@
+create or replace function primerTransaccion (integer, id varchar, varchar, date) returns integer 
+as $$
+declare
+	t_ceremonias_celebradas integer := 0;
+begin
+	INSERT INTO sacramento VALUES ($1, id, $3, $4);
+	--Consultar el dato
+	SELECT COUNT(sacramento.id_sacramento) INTO t_ceremonias_celebradas
+	FROM sacramento WHERE sacramento.id_sacerdote = id;
+	--Actualizar el dato
+	UPDATE sacerdote SET ceremonias_celebradas = t_ceremonias_celebradas 
+	WHERE sacerdote.id_sacerdote = id;
+return t_ceremonias_celebradas;
+end $$
+language plpgsql;
